@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
         # static ip address
         jenkins.vm.network :private_network, ip: "192.168.60.2"
     config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "ansible/jenkins3.yml"
+        ansible.playbook = "ansible/jenkins.yml"
         end
     end
 

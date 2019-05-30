@@ -51,13 +51,13 @@
           recurse=true
 
 # permissions sonatype folder
-    - name: change owner of sonatype directory
-      file:
-        path: /usr/bin/sonatype-work
-        owner: nexus
-        group: nexus
-        recurse: yes
-        state: director
+    # - name: change owner of sonatype directory
+    #   file:
+    #     path: /usr/bin/sonatype-work
+    #     owner: nexus
+    #     group: nexus
+    #     recurse: yes
+    #     state: director
 
 # copier nexus.rc
     - name: Copy nexus.rc
@@ -78,12 +78,12 @@
       systemd: daemon_reload=yes
 
 # demarrer le service
-#    - name: démarrage du servive nexus
-#      command: /usr/bin/nexus-3.0.2-02/bin/nexus start
-#      sudo: yes
+    - name: démarrage du servive nexus
+      command: /usr/bin/nexus-3.0.2-02/bin/nexus start
+      sudo: yes
       
-    - name: start nexus service
-      service: name=nexus.service state=started enabled=yes
+    # - name: start nexus service
+    #   service: name=nexus.service state=started enabled=yes
 
 # firewall
     - name: ensure firewalld is running
