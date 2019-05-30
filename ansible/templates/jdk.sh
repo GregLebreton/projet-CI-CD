@@ -1,0 +1,3 @@
+JAVA_HOME=/opt/java
+PATH=$PATH:$JAVA_HOME/bin
+export PATH JAVA_HOME

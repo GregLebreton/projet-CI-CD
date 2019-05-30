@@ -1,0 +1,10 @@
+# INSTALL KUBE PLAYBOOK
+- hosts: all 
+  become: true
+  tasks:
+  - name: Download le binaire
+    get_url: url=https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/linux/amd64/kubectl dest=/usr/local/bin/kubectl
+    tags: download
+
+  - name: droits sur .kubectl
+    command: chmod +x /usr/local/bin/kubectl

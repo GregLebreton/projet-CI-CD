@@ -1,0 +1,96 @@
+---
+- hosts: nexus
+  become: true
+  tasks:
+
+# check java is installed
+    - name : Download Java 1.8 
+      yum:
+        name: java-1.8.0-openjdk-devel,git
+        state: present
+
+# download nexus
+    - name: Download nexus_package 
+      get_url: url=https://sonatype-download.global.ssl.fastly.net/nexus/3/nexus-3.0.2-02-unix.tar.gz dest=/usr/bin
+      tags: download
+
+
+# nexus user and group
+    - name: Ensure Nexus o/s group exists
+      group:
+        name: "nexus"
+        state: present
+
+    - name: Ensure Nexus o/s user exists
+      user:
+        name: "nexus"
+        group: "nexus"
+        shell: "/bin/bash"
+        state: present
+
+# unpack nexus
+    - name: Unpack Nexus download
+      unarchive:
+          src="/usr/bin/nexus-3.0.2-02-unix.tar.gz"
+          dest="/usr/bin"
+          force=no
+          copy=false
+          owner="nexus"
+          group="nexus"
+          mode="0755"
+      tags: unpack
+
+# permissions
+    - name: Set permissions and ownership on Nexus installation directory
+      file:
+          path=/usr/bin/nexus-3.0.2-02
+          state="directory"
+          owner="nexus"
+          group="nexus"
+          mode="0755"
+          recurse=true
+
+# permissions sonatype folder
+    - name: change owner of sonatype directory
+      file:
+        path: /usr/bin/sonatype-work
+        owner: nexus
+        group: nexus
+        recurse: yes
+        state: director
+
+# copier nexus.rc
+    - name: Copy nexus.rc
+      copy: 
+        src: templates/nexus.rc
+        dest: /usr/bin/nexus-3.0.2-02/bin/nexus.rc
+        owner: nexus
+        group: nexus
+        mode: u=rw,g=r,o=r
+
+# copy nexus.service
+    - name: copy nexus.service
+      template:
+        src: nexus.service
+        dest: /etc/systemd/system/nexus.service
+
+    - name: redemarrage service
+      systemd: daemon_reload=yes
+
+# demarrer le service
+#    - name: démarrage du servive nexus
+#      command: /usr/bin/nexus-3.0.2-02/bin/nexus start
+#      sudo: yes
+      
+    - name: start nexus service
+      service: name=nexus.service state=started enabled=yes
+
+# firewall
+    - name: ensure firewalld is running
+      service: name=firewalld state=started
+
+    - name: insert firewalld rule for nexus http port
+      firewalld: port=8081/tcp permanent=true state=enabled immediate=yes
+
+    - name: reload firewalld
+      service: name=firewalld state=restarted
