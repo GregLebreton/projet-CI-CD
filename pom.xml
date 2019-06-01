@@ -169,18 +169,18 @@
     		<snapshotRepository>
         		<id>snapshots</id>
         		<name>maven-snapshots</name>
-        		<url>http://52.138.167.229:8081/repository/maven-snapshots/</url>
+        		<url>http://192.168.60.4:8081/repository/maven-snapshots/</url>
     		</snapshotRepository>
    			<repository>
         		<id>releases</id>
         		<name>maven-releases</name>
-    			<url>http://52.138.167.229:8081/repository/maven-releases</url>
+    			<url>http://192.168.60.4:8081/repository/maven-releases</url>
     		</repository>
 		</distributionManagement>
 
 	<scm>
-  		<url>http://github.com/kraiem12/ProjetCD-GRIM</url>
-   		<connection>scm:git:git@github.com:kraiem12/ProjetCD-GRIM.git</connection>
+  		<url>http://github.com/GregLebreton/projet-CI-CD</url>
+   		<connection>scm:git:git@github.com:GregLebreton/projet-CI-CD.git</connection>
    		<!--developerConnection>http://github.com/kraiem12/ProjetCD-GRIM.git</developerConnection-->
 		  <tag>HEAD</tag>
 	</scm>
