@@ -2,9 +2,9 @@
 - hosts: jenkins 
   become: true 
   roles: 
-    - geerlingguy.jenkins
-    - geerlingguy.git
-    - tecris.maven
-    # - jenkinsconfig
+    # - geerlingguy.jenkins
+    # - geerlingguy.git
+    # - tecris.maven
+    - jenkinsconfig
 # ajouter role install plugin (build-pipeline, maven-integration, ...) + build pipeline
 

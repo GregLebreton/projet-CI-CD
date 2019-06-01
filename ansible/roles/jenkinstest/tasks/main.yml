@@ -1,0 +1,82 @@
+---
+# JENKINS INSTALL + CONFIG
+  # - name: install Java
+  #   yum: name=java-1.8.0-openjdk-devel state=present
+
+  # - name: get Jenkins repository
+  #   get_url: url=http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo dest=/etc/yum.repos.d/jenkins.repo
+
+  # - name: add Jenkins repo to system
+  #   shell: rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+  # - name: install Jenkins
+  #   yum: name=jenkins state=present
+
+  # - name: enable Jenkins
+  #   service: name=jenkins state=started enabled=yes
+
+  # - name: ensure firewalld is running
+  #   service: name=firewalld state=started
+
+  # - name: insert firewalld rule for Jenkins http port
+  #   firewalld: port=8080/tcp permanent=true state=enabled immediate=yes
+
+  # - name: install git
+  #   yum: name=git state=present
+
+  # - name: install maven
+  #   yum: name=maven state=present
+
+  # - name: install Jenkins CLI
+  #   get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=./
+
+  # # - name: Login to Jenkins using base password
+  # #   shell: java -jar jenkins-cli.jar -s http://localhost:8080 sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+  # - name: Get Jenkins admin password from file.
+  #   slurp:
+  #     src: /var/lib/jenkins/secrets/initialAdminPassword
+  #   register: adminpasswordfile
+  #   no_log: false
+  #   # when: jenkins_admin_password_file != ""
+  #   tags: ['skip_ansible_lint']
+
+  # - name: Set Jenkins admin password fact.
+  #   set_fact:
+  #     jenkins_admin_password: "{{ adminpasswordfile['stdout'] | default(jenkins_admin_password) }}"
+  #   no_log: false
+
+  # - name: put jenkins ssh key into Jenkins server
+  #   copy:
+  #     src: .ssh
+  #     dest: /var/lib/jenkins/
+
+  # - name: Change permissions of .ssh directory
+  #   shell: sudo chmod 644 /var/lib/jenkins/.ssh/id_rsa.pub ; sudo chmod 600 /var/lib/jenkins/.ssh/id_rsa
+
+  # - name: Download Jenkins base plugins
+  #   shell: java -jar jenkins-cli.jar -s http://localhost:8080/ install-plugin {{item}}
+  #   with_items:
+  #     - Folders
+  #     - OWASP Markup Formatter
+  #     - Build Timeout
+  #     - Credentials Binding
+  #     - Timestamper
+  #     - Workspace Cleanup
+  #     - Ant
+  #     - Gradle
+  #     - Pipeline
+  #     - GitHub Branch Source
+  #     - Pipeline: GitHub Groovy Libraries
+  #     - Pipeline: Stage View
+  #     - Git
+  #     - Subversion
+  #     - SSH Slaves
+  #     - Matrix Authorization Strategy
+  #     - PAM Authentication
+  #     - LDAP
+  #     - Email Extension
+  #     - Mailer
+
+  - name: create Jenkins job from configuration
+    shell: java -jar jenkins-cli.jar -s http://localhost:8080/ create-job Project_Pipeline < config.xml

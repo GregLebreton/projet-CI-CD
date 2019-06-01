@@ -18,7 +18,7 @@
     stages{
         stage(&quot;Pull&quot;){
             steps{
-                git branch: &apos;projet_terra&apos;, url: &apos;https://github.com/HenryL39/Terraform_TPS.git&apos;
+                git branch: &apos;projet_terra&apos;, url: &apos;https://github.com/GregLebreton/Tprojet-CI-CD.git&apos;
             }
         }
         stage(&quot;Container&quot;){
