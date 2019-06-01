@@ -1,0 +1,6 @@
+---
+# TERRAFORM CONFIG
+  - name: copy json
+    copy:
+      src: templates/
+      dest: ...

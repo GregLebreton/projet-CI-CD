@@ -1,0 +1,38 @@
+---
+# DOCKER
+  - name: install Docker dependancies
+    yum:
+      name:
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+      state: present
+    
+
+  - name: copy Docker repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: install Docker
+    yum:
+      name: docker-ce
+      state: present 
+
+# KUBERNETES
+  - name: copy Kube repo
+    copy:
+      src: templates/kube.repo
+      dest: /etc/yum.repos.d/kubernetes.repo
+    
+  - name: install Kube
+    yum:
+      name: 
+        - kubelet 
+        - kubeadm
+        - kubectl
+      state: present
+
+  - name: start the Docker service
+    shell: systemctl start docker && systemctl enable docker
+
+  - name: start the Kube service
+    shell: systemctl start kubelet && systemctl enable kubelet

@@ -1,0 +1,16 @@
+---
+  - name: creer workspace
+    shell: 
+      - mkdir workspace
+      - cd workspace
+
+  - name: copy infra
+    copy:
+      src: templates/terraform/
+      dest: ./terraform
+
+  # - name: get credentials
+  #   shell: gcloud .... mon_projet.json
+
+  # - name: terraform apply
+  #   shell: terraform apply

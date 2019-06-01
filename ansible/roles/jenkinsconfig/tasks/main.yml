@@ -1,0 +1,97 @@
+---
+  # - name: Install Jenkins plugins using password.
+  #   jenkins_plugin:
+  #     name: "{{ item }}"
+  #     jenkins_home: "{{ jenkins_home }}"
+  #     url_username: admin
+  #     url_password: admin
+  #     state: enabled
+  #     timeout: 60
+  #     updates_expiration: "{{ jenkins_plugin_updates_expiration }}"
+  #     updates_url: "{{ jenkins_updates_url }}"
+  #     url: "http://{{ jenkins_hostname }}:{{ jenkins_http_port }}{{ jenkins_url_prefix }}"
+  #     with_dependencies: no
+  #   with_items: 
+  #     - build-pipeline-plugin
+  #     - maven-integration-plugin
+  #   when: jenkins_admin_password != ""
+  #   notify: restart jenkins
+  #   tags: ['skip_ansible_lint']
+  #   register: plugin_result
+  #   until: plugin_result is success
+  #   retries: 3
+  #   delay: 2
+
+  # - name: Restart Jenkins
+  #   service: name=jenkins state=restarted
+
+  # - name: Wait for Jenkins to restart
+  #   wait_for:
+  #     host=localhost
+  #     port=8080
+  #     delay=20
+  #     timeout=300
+
+  # - name: Download Jenkins base plugins
+  #   shell: java -jar jenkins-cli.jar -s http://localhost:8080/ install-plugin {{item}}
+  #   with_items:
+  #     - Folders
+  #     - OWASP Markup Formatter
+  #     - Build Timeout
+  #     - Credentials Binding
+  #     - Timestamper
+  #     - Workspace Cleanup
+  #     - Ant
+  #     - Gradle
+  #     - Pipeline
+  #     - GitHub Branch Source
+  #     - Pipeline: GitHub Groovy Libraries
+  #     - Pipeline: Stage View
+  #     - Git
+  #     - Subversion
+  #     - SSH Slaves
+  #     - Matrix Authorization Strategy
+  #     - PAM Authentication
+  #     - LDAP
+  #     - Email Extension
+  #     - Mailer
+
+
+#build pipeline plugin
+  - name: Install plugin pipeline
+    jenkins_plugin:
+      name: build-pipeline-plugin
+      url_username: admin
+      url_password: admin
+      url: http://localhost:8080
+      
+# plugin maven
+  - name: Install plugin Maven
+    jenkins_plugin:
+      name: maven-integration-plugin
+      url_username: admin
+      url_password: admin
+      url: http://localhost:8080
+
+# restart jenkins
+  # - name: Restart Jenkins
+  #   service: name=jenkins state=restarted
+
+  # - name: Wait for Jenkins to restart
+  #   wait_for:
+  #     host=localhost
+  #     port=8080
+  #     delay=20
+  #     timeout=300
+
+
+  # - name: Restart Jenkins if required
+  #   service:
+  #     name: jenkins
+  #     state: restarted
+  #   when: jenkins_restart_required
+
+  # - name: jenkns login
+  #     url_username: admin
+  #     url_password: admin
+  #     url: http://localhost:8080
