@@ -1,4 +1,10 @@
 ---
+# TERRAFORM CONFIG
+  - name: copy json
+    copy:
+      src: templates/
+      dest: ...
+
   - name: creer workspace
     shell: 
       - mkdir workspace
@@ -11,6 +17,3 @@
 
   # - name: get credentials
   #   shell: gcloud .... mon_projet.json
-
-  # - name: terraform apply
-  #   shell: terraform apply
