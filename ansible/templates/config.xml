@@ -9,16 +9,20 @@
       <options/>
     </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
   </actions>
-  <description></description>
+  <description>test jenkins automatisation</description>
   <keepDependencies>false</keepDependencies>
   <properties/>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.69">
     <script>pipeline{
+        tools { 
+        maven 'maven'
+        jdk 'java'
+    }
     agent any
     stages{
         stage(&quot;Pull&quot;){
             steps{
-                git branch: &apos;projet_terra&apos;, url: &apos;https://github.com/GregLebreton/Tprojet-CI-CD.git&apos;
+                git branch: &apos;develop&apos;, url: &apos;https://github.com/GregLebreton/projet-CI-CD.git&apos;
             }
         }
         stage(&quot;Container&quot;){
@@ -42,3 +46,4 @@
   </definition>
   <triggers/>
 <disabled>false</disabled>
+</flow-definition>

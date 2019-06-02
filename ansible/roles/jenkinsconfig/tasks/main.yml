@@ -1,13 +1,31 @@
 ---   
-# plugin pipeline
-  - name: Install plugin pipeline
-    jenkins_plugin:
-      name: pipeline-plugin
-      url_username: admin
-      url_password: admin
-      url: http://localhost:8080
+# connect to Jenkins
+  - name: login Jenkins
+    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080/ -user admin
 
-# restart jenkins
+# copy pipeline config
+  - name: copy templates/config.xml
+    copy:
+      src: templates/config.xml
+      dest: ./
+
+# copy Jenkinsfile
+  - name: copy Jenkinsfile
+    copy:
+      src: ../Jenkinsfile
+      dest: ./
+
+# install plugins
+  - name: Download Jenkins plugins
+    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080/ -auth admin:admin install-plugin {{item}}
+    with_items:
+      - workflow-cps
+      - workflow-aggregator
+      - pipeline-maven
+      - build-pipeline-plugin
+      - git
+
+#restart jenkins
   - name: Restart Jenkins
     service: name=jenkins state=restarted
 
@@ -18,25 +36,22 @@
       delay=20
       timeout=300
 
-  - name: copy templates/config.xml
-    copy:
-      src: templates/config.xml
-      dest: ./
+# login
+  - name: login Jenkins
+    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080/ -user admin
 
-  # - name: login to Jenkins
-  #   shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080
+# create job
+  - name: create Jenkins job from configuration file
+    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080 -auth admin:admin create-job projet-CI-CD <./config.xml
 
-  - name: create Jenkins job from configuration
-    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080 create-job Project_Pipeline < ./config.xml
+# # config Maven Home
+#   - name: Config Maven home /opt/apache-maven-3.6.1
+#     shell: ...
 
+# # config Java home
+#   - name: config java home
+#     shell: ...
 
-  # - name: Restart Jenkins if required
-  #   service:
-  #     name: jenkins
-  #     state: restarted
-  #   when: jenkins_restart_required
-
-  # - name: jenkns login
-  #     url_username: admin
-  #     url_password: admin
-  #     url: http://localhost:8080
+# execute the job
+  - name: execute the job
+    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080 -auth admin:admin build projet-CI-CD

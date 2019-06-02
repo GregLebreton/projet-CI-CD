@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage ('checkout') {
             steps {
-                git branch: 'features/greg', credentialsId: '859d834a-84f4-42a3-93d0-9398275dba78', url: 'https://github.com/kraiem12/ProjetCD-GRIM.git'
+                git branch: 'develop', credentialsId: '859d834a-84f4-42a3-93d0-9398275dba78', url: 'https://github.com/GregLebreton/projet-CI-CD.git'
             }
         }
 //        stage ('dependances') {
