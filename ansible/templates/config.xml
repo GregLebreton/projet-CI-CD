@@ -14,10 +14,14 @@
   <properties/>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.69">
     <script>pipeline{
-        tools { 
+        <!-- tools { 
         maven 'maven'
         jdk 'java'
-    }
+    } -->
+    <!-- environment {
+        MAVEN_HOME = /opt/apache-maven-3.6.1
+        JAVA_HOME = /
+    } -->
     agent any
     stages{
         stage(&quot;Pull&quot;){

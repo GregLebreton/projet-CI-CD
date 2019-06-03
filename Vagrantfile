@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "jenkins" do |jenkins|
         jenkins.vm.hostname = "jenkins"
         # static ip address
-        jenkins.vm.network :private_network, ip: "192.168.60.2", bridge: "wlp5s0"
+        jenkins.vm.network :private_network, ip: "192.168.60.2"
     config.vm.provision "ansible" do |ansible|
         ansible.playbook = "ansible/jenkins.yml"
         end
@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "docker" do |docker|
         docker.vm.hostname = "docker"
         # static ip address
-        docker.vm.network :private_network, ip: "192.168.60.3", bridge: "wlp5s0"
+        docker.vm.network :private_network, ip: "192.168.60.3"
     config.vm.provision "ansible" do |ansible|
         ansible.playbook = "ansible/docker.yml"
         end
@@ -28,11 +28,20 @@ Vagrant.configure("2") do |config|
     config.vm.define "nexus" do |nexus|
         nexus.vm.hostname = "nexus"
         # static ip address
-        nexus.vm.network :private_network, ip: "192.168.60.4", bridge: "wlp5s0"
+        nexus.vm.network :private_network, ip: "192.168.60.4"
     config.vm.provision "ansible" do |ansible|
         ansible.playbook = "ansible/nexus.yml"
         end
     end
+
+    config.vm.define "kube" do |kube|
+        kube.vm.hostname = "kube"
+        kube.vm.network :private_network, ip: "192.168.60.5"
+    config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "ansible/kubernetes.yml"
+        end
+    end
+end
 
     # KUBERNETES + TERRAFORM
     # config.vm.provider :virtualbox do |v|
@@ -79,11 +88,3 @@ Vagrant.configure("2") do |config|
     #         end
     #     end
     # end 
-    config.vm.define "kube" do |kube|
-        kube.vm.hostname = "kube"
-        kube.vm.network :private_network, ip: "192.168.60.5"
-    config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "ansible/kubernetes.yml"
-        end
-    end
-end

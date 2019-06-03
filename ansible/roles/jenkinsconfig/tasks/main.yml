@@ -16,16 +16,26 @@
       dest: ./
 
 # install plugins
-  - name: Download Jenkins plugins
+  - name: download Jenkins plugins
     shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080/ -auth admin:admin install-plugin {{item}}
     with_items:
-      - workflow-cps
-      - workflow-aggregator
-      - pipeline-maven
-      - build-pipeline-plugin
-      - git
+      - ssh-slaves
+      - ssh-agent
 
-#restart jenkins
+# ssh keygen
+  - name: ssh keygen
+    shell: ssh-keygen -b 2048 -t rsa -f .ssh/id_rsa -q -N ""
+    args:
+      creates: .ssh/id_rsa
+
+# copy ssh keys
+#   - name: copy ssh keys to docker slave
+#     shell: cat .ssh/id_rsa.pub
+#       copy:
+#          src: .ssh/
+#          dest: /var/lib/jenkins.ssh/known_hosts
+
+# restart jenkins
   - name: Restart Jenkins
     service: name=jenkins state=restarted
 
@@ -36,13 +46,16 @@
       delay=20
       timeout=300
 
-# login
-  - name: login Jenkins
-    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080/ -user admin
+# # login
+#   - name: login Jenkins
+#     shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080/ -user admin
 
-# create job
-  - name: create Jenkins job from configuration file
-    shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080 -auth admin:admin create-job projet-CI-CD <./config.xml
+# # create job
+#   - name: create Jenkins job from configuration file
+#     shell: java -jar "/opt/jenkins-cli.jar" -s http://localhost:8080 -auth admin:admin create-job projet-CI-CD <./config.xml
+
+# create node
+
 
 # # config Maven Home
 #   - name: Config Maven home /opt/apache-maven-3.6.1

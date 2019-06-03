@@ -1,0 +1,32 @@
+---
+# CONFIG DOCKER TO BE JENKINS SLAVE
+#  - name: create Jenkins directory
+#    shell: mkdir 
+# log in as su
+  # - name: log in as su 
+  #   shell: sudo su
+
+# create jenkins folder
+  # - name: folder for jenkins
+  #   shell: useradd -d /var/lib/jenkins jenkins
+  #   become: yes
+
+# ssh keygen
+  # - name: ssh keygen
+  #   shell: ssh-keygen -b 2048 -t rsa -f root/.ssh/id_rsa -q -N ""
+  #   args:
+  #     creates: .ssh/id_rsa
+
+# ssh copy id
+  # - name: give keys
+  #   authorized_key:
+  #     user: jenkins
+  #     state: present
+  #     key: "{{ lookup('file', 'jenkins@192.168.60.2:.ssh/id_rsa.pub')}}"
+
+# ssh  copy
+  - name: copying public key
+    authorized_key:
+      user: vagrant
+      state: present
+      key: "{{'file', '.ssh/authorized_keys'}}"

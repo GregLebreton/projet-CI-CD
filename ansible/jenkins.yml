@@ -1,5 +1,7 @@
 ---
 - hosts: jenkins 
+  vars:
+    jenkins_plugins: [Terraform,Git,Pipeline,Pipeline Maven,Pipeline:Groovy,Pipeline:Nodes and Processes,Pipeline:Multibranch,Pipeline:Stage View,Mailer,Gradle,Ant,SSH,SSH Credentials,SSH Agent,SSH Slaves,LDAP,GitHub Branch Source,Node sharing orchestrator, ]
   become: true 
   roles: 
     - geerlingguy.git
